@@ -55,7 +55,7 @@ Node::Node(int recvLength, int prePadding, int postPadding, bool useDefaultLoop)
         nodeData->preAlloc[i] = nullptr;
     }
 
-#if OPENSSL_VERSION_AT_LEAST(1, 1)
+#if (OPENSSL_VERSION_NUMBER>=0x10100000L)
     // If we're compiling against OpenSSL 1.1.0, use TLS instead of SSLv23
     nodeData->clientContext = SSL_CTX_new(TLS_client_method());
     SSL_CTX_set_min_proto_version(nodeData->clientContext, TLS1_VERSION);
