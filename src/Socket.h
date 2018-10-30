@@ -442,11 +442,9 @@ public:
         const char *family;
     };
 
-    template <_uv_peersockfunc>
-    Address getAddress();
-
-    inline Address getLocalAddress(){ return getAddress<getsockname>(); }
-    inline Address getRemoteAddress(){ return getAddress<getpeername>(); }
+    Address getLocalAddress();
+    Address getRemoteAddress();
+    inline Address getAddress(){ return getRemoteAddress(); }
 
     void setNoDelay(int enable) {
         setsockopt(getFd(), IPPROTO_TCP, TCP_NODELAY, &enable, sizeof(int));
