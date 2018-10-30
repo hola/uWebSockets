@@ -5,6 +5,9 @@
 
 namespace uS {
 
+// uv__peersockfunc in uv/src/unix/pipe.c
+typedef int (*_uv_peersockfunc)(int, struct sockaddr*, socklen_t*);
+
 struct TransferData {
     // Connection state
     uv_os_sock_t fd;
@@ -439,7 +442,11 @@ public:
         const char *family;
     };
 
+    template <_uv_peersockfunc>
     Address getAddress();
+
+    inline Address getLocalAddress(){ return getAddress<getsockname>(); }
+    inline Address getRemoteAddress(){ return getAddress<getpeername>(); }
 
     void setNoDelay(int enable) {
         setsockopt(getFd(), IPPROTO_TCP, TCP_NODELAY, &enable, sizeof(int));

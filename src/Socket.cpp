@@ -2,13 +2,14 @@
 
 namespace uS {
 
+template <_uv_peersockfunc F>
 Socket::Address Socket::getAddress()
 {
     uv_os_sock_t fd = getFd();
 
     sockaddr_storage addr;
     socklen_t addrLength = sizeof(addr);
-    if (getpeername(fd, (sockaddr *) &addr, &addrLength) == -1) {
+    if (F(fd, (sockaddr *) &addr, &addrLength) == -1) {
         return {0, "", ""};
     }
 
